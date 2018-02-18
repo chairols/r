@@ -229,6 +229,26 @@
                         <ul class="treeview-menu">
                             <li>
                                 <a href="#">
+                                    <i class="fa fa-lock"></i> Perfiles
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="/perfiles/">
+                                            <i class="fa fa-list-ul"></i> Listado de Perfiles
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/perfiles/agregar/">
+                                            <i class="fa fa-plus-square"></i> Nuevo Perfil
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">
                                     <i class="fa fa-align-left"></i> Menúes
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
