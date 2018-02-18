@@ -236,7 +236,7 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="/perfiles/">
+                                        <a href="/perfiles/listar/">
                                             <i class="fa fa-list-ul"></i> Listado de Perfiles
                                         </a>
                                     </li>

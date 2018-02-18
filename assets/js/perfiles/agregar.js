@@ -15,7 +15,7 @@ function agregar() {
 
     alertify.confirm(
             "<strong>¿Desea confirmar?</strong>",
-            "Se agregará el Peril "+$("#perfil").val(),
+            "Se agregará el Perfil "+$("#perfil").val(),
             function () {
                 datos = {
                     'perfil': $("#perfil").val()

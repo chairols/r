@@ -42,12 +42,13 @@ class Articulos_genericos extends CI_Controller {
         $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $data['links'] = $this->pagination->create_links();
+        $data['total_rows'] = $total_rows['cantidad'];
         /*
          * fin paginador
          */
         
         
-        $data['total_rows'] = $total_rows['cantidad'];
+        
         $data['productos'] = $this->articulos_genericos_model->gets_pendientes_limit($code, $pagina, $config['per_page'], 'A', 'A');
         foreach ($data['productos'] as $key => $value) {
             $data['productos'][$key]['productos'] = $this->articulos_genericos_model->gets_articulos_asociados($value['abstract_id']);
