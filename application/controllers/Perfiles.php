@@ -15,6 +15,9 @@ class Perfiles extends CI_Controller {
         $this->load->model(array(
             'perfiles_model'
         ));
+        $this->load->helper(array(
+            'url'
+        ));
 
         $session = $this->session->all_userdata();
         $this->r_session->check($session);

@@ -10,6 +10,9 @@ class Articulos_genericos extends CI_Controller {
         $this->load->model(array(
             'articulos_genericos_model'
         ));
+        $this->load->helper(array(
+            'url'
+        ));
     }
     
     public function pendientes($pagina = 0) {

@@ -21,59 +21,31 @@ class Usuarios_model extends CI_Model {
         return $query->row_array();
     }
     
-    /*
-     *  usuarios/perfil
-     */
-    public function get($idusuario) {
-        $query = $this->db->query("SELECT *
+    public function get_cantidad($code, $status) {
+        $query = $this->db->query("SELECT COUNT(*) as cantidad
                                     FROM
-                                        usuarios u,
-                                        roles r
+                                        core_user
                                     WHERE
-                                        u.idusuario = '$idusuario' AND
-                                        u.tipo_usuario = r.idrol");
+                                        (user LIKE '%$code%' OR
+                                        first_name LIKE '%$code%' OR
+                                        last_name LIKE '%$code%') AND
+                                        status LIKE '$status'");
         return $query->row_array();
     }
     
-    /*
-     * usuarios/perfil
-     */
-    public function update($datos, $idusuario) {
-        $id = array('idusuario' => $idusuario);
-        $this->db->update('usuarios', $datos, $id);
-    }
-    
-    /*
-     *  usuarios
-     */
-    public function gets() {
+    public function gets_limit($code, $pagina, $cantidad, $status) {
         $query = $this->db->query("SELECT *
                                     FROM
-                                        usuarios u,
-                                        roles r
+                                        core_user
                                     WHERE
-                                        u.tipo_usuario = r.idrol
+                                        (user LIKE '%$code%' OR
+                                        first_name LIKE '%$code%' OR
+                                        last_name LIKE '%$code%') AND
+                                        status LIKE '$status' 
                                     ORDER BY
-                                        u.nombre, u.apellido");
+                                        user
+                                    LIMIT $pagina, $cantidad");
         return $query->result_array();
-    }
-    
-    /*
-     *  usuarios/agregar
-     *  usuarios/modificar
-     */
-    public function get_where($where) {
-        $query = $this->db->get_where('usuarios', $where);
-        
-        return $query->row_array();
-    }
-    
-    /*
-     *  usuarios/agregar
-     */
-    public function set($datos) {
-        $this->db->insert('usuarios', $datos);
-        return $this->db->insert_id();
     }
 }
 ?>

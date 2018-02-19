@@ -7,145 +7,60 @@ class Usuarios extends CI_Controller {
         $this->load->library(array(
             'form_validation',
             'session',
-            'r_session'
+            'r_session',
+            'pagination'
         ));
         $this->load->model(array(
             'usuarios_model',
-            'roles_model',
-            'log_model'
         ));
         $this->load->helper(array(
             'url'
         ));
     }
 
-    public function index() {
-        $session = $this->session->all_userdata();
-        $data['title'] = 'Listar Usuarios';
-        $data['session'] = $session;
-        $this->r_session->check($this->session->all_userdata());
-        $data['segmento'] = $this->uri->segment(1);
-        $data['menu'] = $this->r_session->get_menu();
-
-        $data['usuarios'] = $this->usuarios_model->gets();
-
-        $this->load->view('layout_lte/header', $data);
-        $this->load->view('layout_lte/menu');
-        $this->load->view('usuarios/index');
-        $this->load->view('layout_lte/footer');
-    }
-
-    public function agregar() {
-        $session = $this->session->all_userdata();
-        $data['title'] = 'Agregar Usuario';
-        $data['session'] = $session;
-        $this->r_session->check($this->session->all_userdata());
-        $data['segmento'] = $this->uri->segment(1);
-        $data['menu'] = $this->r_session->get_menu();
-
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
-        $this->form_validation->set_rules('apellido', 'Apellido', 'required');
-        $this->form_validation->set_rules('usuario', 'Usuario', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            
-        } else {
-            $datos = array(
-                'usuario' => $this->input->post('usuario')
-            );
-            $usuario = $this->usuarios_model->get_where($datos);
-
-            if (count($usuario) == 0) {
-                $datos = array(
-                    'nombre' => $this->input->post('nombre'),
-                    'apellido' => $this->input->post('apellido'),
-                    'correo' => $this->input->post('correo'),
-                    'usuario' => $this->input->post('usuario'),
-                    'password' => $this->input->post('password'),
-                    'tipo_usuario' => $this->input->post('rol')
-                );
-                $id = $this->usuarios_model->set($datos);
-
-                $where = array(
-                    'idrol' => $this->input->post('rol')
-                );
-                $rol = $this->roles_model->get_where($where);
-
-                $log = array(
-                    'tabla' => 'usuarios',
-                    'idtabla' => $id,
-                    'texto' => 'Se agregó el usuario ' . $this->input->post('usuario') . '<br>'
-                    . 'nombre: ' . $this->input->post('nombre') . '<br>'
-                    . 'apellido: ' . $this->input->post('apellido') . '<br>'
-                    . 'correo: ' . $this->input->post('correo') . '<br>'
-                    . 'rol: ' . $rol['rol'],
-                    'tipo' => 'add',
-                    'idusuario' => $session['SID']
-                );
-                $this->log_model->set($log);
-
-                redirect('/usuarios/', 'refresh');
-            }
+    public function listar($pagina = 0) {
+        $per_page = 25;
+        $usuario = '';
+        if($this->input->post('usuario') !== null) {
+            $usuario = $this->input->post('usuario');
         }
-
-        $data['roles'] = $this->roles_model->gets();
-
-        $this->load->view('layout_lte/header', $data);
-        $this->load->view('layout_lte/menu');
-        $this->load->view('usuarios/agregar');
-        $this->load->view('layout_lte/footer');
-    }
-
-    public function modificar($idusuario = null) {
-        $session = $this->session->all_userdata();
-        $data['title'] = 'Listar Usuarios';
-        $data['session'] = $session;
-        $this->r_session->check($this->session->all_userdata());
-        if ($idusuario == null) {
-            redirect('/usuarios/', 'refresh');
-        }
-        $data['segmento'] = $this->uri->segment(1);
-        $data['menu'] = $this->r_session->get_menu();
-
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
-        $this->form_validation->set_rules('apellido', 'Apellido', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            
-        } else {
-            $datos = array(
-                'nombre' => $this->input->post('nombre'),
-                'apellido' => $this->input->post('apellido'),
-                'correo' => $this->input->post('correo'),
-                'tipo_usuario' => $this->input->post('rol')
-            );
-
-            if (strlen($this->input->post('password')) > 0) {
-                $datos['password'] = $this->input->post('password');
-            }
-
-            $this->usuarios_model->update($datos, $idusuario);
-
-            redirect('/usuarios/', 'refresh');
-        }
+        
         /*
-         *  desarrollar
+         * inicio paginador
          */
-
-        $datos = array(
-            'idusuario' => $idusuario
-        );
-        $data['usuario'] = $this->usuarios_model->get_where($datos);
-
-        $data['roles'] = $this->roles_model->gets();
-
-        $this->load->view('layout_lte/header', $data);
-        $this->load->view('layout_lte/menu');
-        $this->load->view('usuarios/modificar');
-        $this->load->view('layout_lte/footer');
+        $total_rows = $this->usuarios_model->get_cantidad($usuario, 'A');
+        $config['base_url'] = '/usuarios/listar/';
+        $config['total_rows'] = $total_rows['cantidad'];
+        $config['per_page'] = $per_page;
+        $config['first_link'] = '<i class="fa fa-angle-double-left"></i>';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['last_link'] = '<i class="fa fa-angle-double-right"></i>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#"><b>';
+        $config['cur_tag_close'] = '</b></a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $this->pagination->initialize($config);
+        $data['links'] = $this->pagination->create_links();
+        $data['total_rows'] = $total_rows['cantidad'];
+        /*
+         * fin paginador
+         */
+        
+        $data['usuarios'] = $this->usuarios_model->gets_limit($usuario, $pagina, $config['per_page'], 'A');
+        
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/menu');
+        $this->load->view('usuarios/listar');
+        $this->load->view('layout/footer');
     }
-
+    
     public function login() {
         $this->form_validation->set_rules('usuario', 'Usuario', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -184,45 +99,7 @@ class Usuarios extends CI_Controller {
         redirect('/usuarios/login/', 'refresh');
     }
 
-    public function perfil() {
-        $session = $this->session->all_userdata();
-        $this->r_session->check($session);
-        $data['title'] = 'Perfil';
-        $data['session'] = $session;
-        $data['segmento'] = $this->uri->segment(1);
-        $data['menu'] = $this->r_session->get_menu();
-
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
-        $this->form_validation->set_rules('apellido', 'Apellido', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            
-        } else {
-            $usuario = $this->usuarios_model->get($session['SID']);
-
-            $datos = array(
-                'nombre' => $this->input->post('nombre'),
-                'apellido' => $this->input->post('apellido'),
-                'correo' => $this->input->post('correo')
-            );
-
-            if ($usuario['password'] == $this->input->post('passactual')) {
-                if ($this->input->post('password') == $this->input->post('password2')) {
-                    $datos['password'] = $this->input->post('password');
-                }
-            }
-
-            $this->usuarios_model->update($datos, $session['SID']);
-        }
-
-        $data['usuario'] = $this->usuarios_model->get($session['SID']);
-
-        $this->load->view('layout_lte/header', $data);
-        $this->load->view('layout_lte/menu');
-        $this->load->view('usuarios/perfil');
-        $this->load->view('layout_lte/footer');
-    }
-
+    
 }
 
 ?>
