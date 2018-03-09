@@ -215,6 +215,10 @@
 <script src="/assets/addons_extra/alertifyjs/alertify.min.js"></script>
 <!-- iCheck -->
 <script src="/assets/AdminLTE-2.3.11/plugins/iCheck/icheck.min.js"></script>
+<!-- Chosen -->
+<script type="text/javascript" src="/assets/addons_extra/chosen-js/chosen.jquery.js"></script>
+
+<script type="text/javascript" src="/assets/js/layout/footer.js"></script>
 <!-- AdminLTE App -->
 <script src="/assets/AdminLTE-2.3.11/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->

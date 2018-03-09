@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="/assets/addons_extra/alertifyjs/css/themes/bootstrap.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="/assets/AdminLTE-2.3.11/plugins/iCheck/all.css">
+  <!-- Chosen -->
+  <link rel="stylesheet" href="/assets/addons_extra/chosen-js/chosen.css">
+  <link rel="stylesheet" href="/assets/addons_extra/chosen-js/bootstrap-chosen.css">
   
   <!-- Theme style -->
   <link rel="stylesheet" href="/assets/AdminLTE-2.3.11/dist/css/AdminLTE.min.css">

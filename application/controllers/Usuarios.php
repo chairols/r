@@ -12,6 +12,7 @@ class Usuarios extends CI_Controller {
         ));
         $this->load->model(array(
             'usuarios_model',
+            'perfiles_model'
         ));
         $this->load->helper(array(
             'url'
@@ -98,7 +99,68 @@ class Usuarios extends CI_Controller {
         $this->session->sess_destroy();
         redirect('/usuarios/login/', 'refresh');
     }
-
+    
+    public function modificar($idusuario) {
+        
+        $this->form_validation->set_rules('perfil', 'Perfil', 'required');
+        
+        if($this->form_validation->run() == FALSE) {
+            
+        } else {
+            $datos = array(
+                'idperfil' => $this->input->post('perfil')
+            );
+            $this->usuarios_model->update_perfil($datos, $idusuario);
+        }
+        $datos = array(
+            'user_id' => $idusuario
+        );
+        $data['usuario'] = $this->usuarios_model->get_where($datos);
+        $data['perfil'] = $this->usuarios_model->get_perfil($idusuario);
+        
+        $data['perfiles'] = $this->perfiles_model->gets();
+        
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/menu');
+        $this->load->view('usuarios/modificar');
+        $this->load->view('layout/footer');
+    }
+    
+    public function modificar_ajax() {
+        
+        $this->form_validation->set_rules('usuario', 'Usuario', 'required');
+        if($this->input->post('password') != '') {
+            $this->form_validation->set_rules('password', 'Password', 'matches[password2]');
+        }
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
+        $this->form_validation->set_rules('apellido', 'Apellido', 'required');
+        
+        $this->form_validation->set_rules('perfil', 'Perfil', 'required');
+        
+        
+        
+        if($this->form_validation->run() == FALSE) {
+            $json = array(
+                'status' => 'error',
+                'data' => validation_errors()
+            );
+            echo json_encode($json);
+        } else {
+            
+            /*
+             *   Falta desarrollo
+             */
+            $datos = array(
+                'idperfil' => $this->input->post('perfil')
+            );
+            $this->usuarios_model->update_perfil($datos, $this->input->post('idusuario')); 
+            $json = array(
+                        'status' => 'ok'
+                    );
+                    echo json_encode($json);
+        }
+    }
     
 }
 

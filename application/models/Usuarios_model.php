@@ -47,5 +47,24 @@ class Usuarios_model extends CI_Model {
                                     LIMIT $pagina, $cantidad");
         return $query->result_array();
     }
+    
+    public function get_where($where) {
+        $query = $this->db->get_where('core_user', $where);
+        
+        return $query->row_array();
+    }
+    
+    public function get_perfil($idusuario) {
+        $where = array(
+            'idusuario' => $idusuario
+        );
+        $query = $this->db->get_where('addon_usuarios_perfiles', $where);
+        
+        return $query->row_array();
+    }
+    
+    public function update_perfil($where, $idusuario) {
+        $this->db->update('addon_usuarios_perfiles', $where, array('idusuario'=>$idusuario));
+    } 
 }
 ?>

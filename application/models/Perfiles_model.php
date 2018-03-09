@@ -38,5 +38,16 @@ class Perfiles_model extends CI_Model {
                                     LIMIT $pagina, $cantidad");
         return $query->result_array();
     }
+    
+    public function gets() {
+        $query = $this->db->query("SELECT *
+                                    FROM
+                                        addon_perfiles
+                                    WHERE
+                                        activo = '1'
+                                    ORDER BY
+                                        perfil");
+        return $query->result_array();
+    }
 }
 ?>

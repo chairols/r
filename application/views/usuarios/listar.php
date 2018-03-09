@@ -44,7 +44,7 @@
                                     <a href="#" class="btn bg-navy" data-placement="bottom" data-toggle="tooltip" data-original-title="Más información" class="tooltips">
                                         <i class="fa fa-plus"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar" class="tooltips">
+                                    <a href="/usuarios/modificar/<?=$usuario['user_id']?>/" class="btn btn-primary" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar" class="tooltips">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a class="btn btn-danger" data-placement="bottom" data-toggle="tooltip" data-original-title="Eliminar" class="tooltips">

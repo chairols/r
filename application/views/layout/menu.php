@@ -229,6 +229,21 @@
                         <ul class="treeview-menu">
                             <li>
                                 <a href="#">
+                                    <i class="fa fa-user"></i> Usuarios
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="/usuarios/listar/">
+                                            <i class="fa fa-list-ul"></i> Listado de Usuarios
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">
                                     <i class="fa fa-lock"></i> Perfiles
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
