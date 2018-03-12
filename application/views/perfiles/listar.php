@@ -37,7 +37,7 @@
                                     <strong><?=$perfil['perfil']?></strong>
                                 </td>
                                 <td class="text-center pull-right">
-                                    <a href="#" class="btn btn-primary" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar" class="tooltips">
+                                    <a href="/perfiles/modificar/<?=$perfil['idperfil']?>/" class="btn btn-primary" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar" class="tooltips">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a class="btn btn-danger" data-placement="bottom" data-toggle="tooltip" data-original-title="Eliminar" class="tooltips">

@@ -59,5 +59,22 @@ class Menu_model extends CI_Model {
                                     LIMIT $pagina, $cantidad_por_pagina");
         return $query->result_array();
     }
+    
+    public function obtener_menu_por_padre($idpadre, $idperfil) {
+        $query = $this->db->query("SELECT m.*, up.idperfil 
+                                    FROM
+                                        (addon_menu m
+                                    LEFT JOIN
+                                        addon_usuarios_perfiles up
+                                    ON
+                                        m.idmenu = up.idmenu AND
+                                        up.idperfil = '$idperfil')
+                                    WHERE
+                                        m.padre = '$idpadre'
+                                    ORDER BY
+                                        m.orden, m.menu" );
+        return $query->result_array();
+    }
+    
 }
 ?>

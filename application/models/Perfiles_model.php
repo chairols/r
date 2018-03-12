@@ -49,5 +49,19 @@ class Perfiles_model extends CI_Model {
                                         perfil");
         return $query->result_array();
     }
+    
+    public function get_where_menu($where) {
+        $query = $this->db->get_where('addon_perfiles_menu', $where);
+        
+        return $query->row_array();
+    }
+    
+    public function delete_menu($where) {
+        $this->db->delete('addon_perfiles_menu', $where);
+    }
+    
+    public function set_menu($where) {
+        $this->db->insert('addon_perfiles_menu', $where);
+    }
 }
 ?>

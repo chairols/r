@@ -217,11 +217,17 @@
 <script src="/assets/AdminLTE-2.3.11/plugins/iCheck/icheck.min.js"></script>
 <!-- Chosen -->
 <script type="text/javascript" src="/assets/addons_extra/chosen-js/chosen.jquery.js"></script>
+<!-- JsTree -->
+<script type="text/javascript" src="/assets/addons_extra/jstree-3.3.5/dist/jstree.min.js"></script>
 
 <script type="text/javascript" src="/assets/js/layout/footer.js"></script>
 <!-- AdminLTE App -->
 <script src="/assets/AdminLTE-2.3.11/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/AdminLTE-2.3.11/dist/js/demo.js"></script>
+<?php if($javascript != '') { ?>
+<!-- Javascript de la Vista -->
+<script type="text/javascript" src="<?=$javascript?>"></script>
+<?php } ?>
 </body>
 </html>

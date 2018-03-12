@@ -22,14 +22,14 @@ class Perfiles extends CI_Controller {
         $session = $this->session->all_userdata();
         $this->r_session->check($session);
     }
-    
+
     public function listar($pagina = 0) {
         $per_page = 25;
         $perfil = '';
-        if($this->input->post('perfil') !== null) {
+        if ($this->input->post('perfil') !== null) {
             $perfil = $this->input->post('perfil');
         }
-        
+
         /*
          * inicio paginador
          */
@@ -57,9 +57,9 @@ class Perfiles extends CI_Controller {
         /*
          * fin paginador
          */
-        
+
         $data['perfiles'] = $this->perfiles_model->gets_limit($perfil, $pagina, $config['per_page'], 1);
-        
+
         $this->load->view('layout/header', $data);
         $this->load->view('layout/menu');
         $this->load->view('perfiles/listar');
@@ -116,6 +116,83 @@ class Perfiles extends CI_Controller {
                 echo json_encode($json);
             }
         }
+    }
+
+    public function modificar($idperfil = 0) {
+        $data['session'] = $this->session->all_userdata();
+        
+        if ($idperfil == 0) {
+            redirect('/perfiles/listar/', 'refresh');
+        }
+        $data['javascript'] = "/assets/js/perfiles/modificar.js";
+        $datos = array(
+            'idperfil' => $idperfil
+        );
+        $data['perfil'] = $this->perfiles_model->get_where($datos);
+
+        $data['padres'] = $this->menu_model->gets_padres_ordenados(0);
+        foreach ($data['padres'] as $key => $value) {
+            $datos = array(
+                'idmenu' => $value['idmenu'],
+                'idperfil' => $idperfil
+            );
+            $data['padres'][$key]['menu'] = $this->perfiles_model->get_where_menu($datos);
+            $data['padres'][$key]['hijos'] = $this->menu_model->gets_padres_ordenados($value['idmenu']);
+            foreach ($data['padres'][$key]['hijos'] as $k => $v) {
+                $data['padres'][$key]['hijos'][$k]['hijos'] = $this->menu_model->gets_padres_ordenados($v['idmenu']);
+            }
+        }
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('layout/menu');
+        $this->load->view('perfiles/modificar');
+        $this->load->view('layout/footer');
+    }
+
+    public function actualizar_checkbox_ajax() {
+        $data['padres'] = $this->menu_model->gets_padres_ordenados(0);
+        $datos = array(
+            'idperfil' => $this->input->post('perfil')
+        );
+        $data['perfil'] = $this->perfiles_model->get_where($datos);
+        if ($this->input->post('menu') > 0) {
+            $datos = array(
+                'idmenu' => $this->input->post('menu'),
+                'idperfil' => $this->input->post('perfil')
+            );
+            $resultado = $this->perfiles_model->get_where_menu($datos);
+            
+            if($resultado != null) {
+                $this->perfiles_model->delete_menu($datos);
+            } else {
+                $this->perfiles_model->set_menu($datos);
+            }
+        }
+        foreach ($data['padres'] as $key => $value) {
+            $datos = array(
+                'idmenu' => $value['idmenu'],
+                'idperfil' => $this->input->post('perfil')
+            );
+            $data['padres'][$key]['menu'] = $this->perfiles_model->get_where_menu($datos);
+            $data['padres'][$key]['hijos'] = $this->menu_model->gets_padres_ordenados($value['idmenu']);
+            foreach ($data['padres'][$key]['hijos'] as $k => $v) {
+                $datos = array(
+                    'idmenu' => $v['idmenu'],
+                    'idperfil' => $this->input->post('perfil')
+                );
+                $data['padres'][$key]['hijos'][$k]['menu'] = $this->perfiles_model->get_where_menu($datos);
+                $data['padres'][$key]['hijos'][$k]['hijos'] = $this->menu_model->gets_padres_ordenados($v['idmenu']);
+                foreach($data['padres'][$key]['hijos'][$k]['hijos'] as $k1 => $v1) {
+                    $datos = array(
+                        'idmenu' => $v1['idmenu'],
+                        'idperfil' => $this->input->post('perfil')
+                    );
+                    $data['padres'][$key]['hijos'][$k]['hijos'][$k1]['menu'] = $this->perfiles_model->get_where_menu($datos);
+                }
+            }
+        }
+
+        $this->load->view('perfiles/actualizar_checkbox_ajax', $data);
     }
 
 }

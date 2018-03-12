@@ -20,6 +20,8 @@
   <!-- Chosen -->
   <link rel="stylesheet" href="/assets/addons_extra/chosen-js/chosen.css">
   <link rel="stylesheet" href="/assets/addons_extra/chosen-js/bootstrap-chosen.css">
+  <!-- JsTree -->
+  <link rel="stylesheet" href="/assets/addons_extra/jstree-3.3.5/dist/themes/default/style.min.css">
   
   <!-- Theme style -->
   <link rel="stylesheet" href="/assets/AdminLTE-2.3.11/dist/css/AdminLTE.min.css">

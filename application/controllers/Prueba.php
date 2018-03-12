@@ -1,17 +1,21 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Prueba extends CI_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->library(array(
-            'wsfe/wsfe'
+            'wsfe/wsfe',
+            'r_session'
         ));
         $this->load->model(array(
-            'comprobantes_model'
+            'comprobantes_model',
+            'menu_model'
         ));
     }
-    
+
     public function factura($numerofactura = 8) {
         /*
          * Certificado de prueba
@@ -19,32 +23,32 @@ class Prueba extends CI_Controller {
         $certificado = "application/libraries/wsfe/hernan.crt";
         $clave = "application/libraries/wsfe/hernan.privada";
         $urlwsaa = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms";
-        
+
         /*
          * Certificado REAL
          */
         $certificado = "application/libraries/wsfe/roller/roller.crt";
         $clave = "application/libraries/wsfe/roller/privada.key";
         $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         $CUIT = 33647656779;
         $urlwsaa = URLWSAA;
-        
+
         $wsfe = new WsFE();
         $wsfe->CUIT = floatval($CUIT);
         $wsfe->setURL(URLWSW);
-        
+
         $PtoVta = 3;
         $TipoComp = 1;
         $UltimoNroComprobante = 0;
-        
-        if ($wsfe->Login($certificado, $clave, $urlwsaa)) { 
+
+        if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
             if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
                 echo $wsfe->ErrorDesc;
             } else {
@@ -53,19 +57,19 @@ class Prueba extends CI_Controller {
             }
         }
 
-        
+
         $ultimo = $this->comprobantes_model->get_ultimo_comprobante($PtoVta, $TipoComp);
-        if(is_null($ultimo['ultimo'])) {
+        if (is_null($ultimo['ultimo'])) {
             $ultimo['ultimo'] = 0;
         }
 
         var_dump($ultimo);
 
-        
+
         $respuesta = array();
-        
-        for($i = $ultimo['ultimo']+1; $i <= $UltimoNroComprobante ; $i++) {
-            if ($wsfe->Login($certificado, $clave, $urlwsaa)) { 
+
+        for ($i = $ultimo['ultimo'] + 1; $i <= $UltimoNroComprobante; $i++) {
+            if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
                 if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
                     echo $wsfe->ErrorDesc;
                 } else {
@@ -103,12 +107,12 @@ class Prueba extends CI_Controller {
                 'ptovta' => $respuesta->PtoVta,
                 'cbtetipo' => $respuesta->CbteTipo
             );
-            
-            
+
+
             $idcomprobante = $this->comprobantes_model->set($datos);
-         
-            if(isset($respuesta->Tributos)) {
-                foreach($respuesta->Tributos as $tributo) {
+
+            if (isset($respuesta->Tributos)) {
+                foreach ($respuesta->Tributos as $tributo) {
                     var_dump($tributo);
                     $datos = array(
                         'id' => $tributo->Id,
@@ -124,8 +128,8 @@ class Prueba extends CI_Controller {
                     $this->comprobantes_model->set_tributo($datos);
                 }
             }
-            
-            if(isset($respuesta->Iva)) {
+
+            if (isset($respuesta->Iva)) {
                 foreach ($respuesta->Iva as $iva) {
                     var_dump($iva);
                     $datos = array(
@@ -136,11 +140,36 @@ class Prueba extends CI_Controller {
                     );
 
                     var_dump($datos);
-                    
+
                     $this->comprobantes_model->set_iva($datos);
                 }
             }
         }
     }
+
+    public function jstree() {
+        $data['padres'] = $this->menu_model->gets_padres_ordenados(0);
+        foreach ($data['padres'] as $key => $value) {
+            $data['padres'][$key]['hijos'] = $this->menu_model->gets_padres_ordenados($value['idmenu']);
+            foreach ($data['padres'][$key]['hijos'] as $k => $v) {
+                $data['padres'][$key]['hijos'][$k]['hijos'] = $this->menu_model->gets_padres_ordenados($v['idmenu']);
+            }
+        }
+        $this->load->view('prueba/jstree', $data);
+    }
+
+    public function actualizar_checkbox() {
+        var_dump($this->input->post());
+    }
+
+    public function menu() {
+
+        $menu = $this->r_session->get_menu();
+        echo "<pre>";
+        print_r($menu);
+        echo "</pre>";
+    }
+
 }
+
 ?>

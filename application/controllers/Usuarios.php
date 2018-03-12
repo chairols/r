@@ -72,6 +72,8 @@ class Usuarios extends CI_Controller {
         } else {
             $usuario = $this->usuarios_model->get_usuario($this->input->post('usuario'), sha1($this->input->post('password')));
             if (!empty($usuario)) {
+                $perfil = $this->usuarios_model->get_perfil($usuario['user_id']);
+                
                 $datos = array(
                     'SID' => $usuario['user_id'],
                     'usuario' => $usuario['user'],
@@ -79,7 +81,7 @@ class Usuarios extends CI_Controller {
                     'apellido' => $usuario['last_name'],
                     'correo' => $usuario['email'],
                     'botonmenu' => 0,
-                    'perfil' => $usuario['profile_id']
+                    'perfil' => $perfil['idperfil']
                 );
                 $this->session->set_userdata($datos);
                 redirect('/dashboard/', 'refresh');
