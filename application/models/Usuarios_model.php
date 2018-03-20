@@ -24,26 +24,34 @@ class Usuarios_model extends CI_Model {
     public function get_cantidad($code, $status) {
         $query = $this->db->query("SELECT COUNT(*) as cantidad
                                     FROM
-                                        core_user
+                                        core_user cu,
+                                        addon_usuarios_perfiles up,
+                                        addon_perfiles p
                                     WHERE
-                                        (user LIKE '%$code%' OR
-                                        first_name LIKE '%$code%' OR
-                                        last_name LIKE '%$code%') AND
-                                        status LIKE '$status'");
+                                        cu.user_id = up.idusuario AND
+                                        up.idperfil = p.idperfil AND
+                                        (cu.user LIKE '%$code%' OR
+                                        cu.first_name LIKE '%$code%' OR
+                                        cu.last_name LIKE '%$code%') AND
+                                        cu.status LIKE '$status'");
         return $query->row_array();
     }
     
     public function gets_limit($code, $pagina, $cantidad, $status) {
-        $query = $this->db->query("SELECT *
+        $query = $this->db->query("SELECT cu.*, p.perfil
                                     FROM
-                                        core_user
+                                        core_user cu,
+                                        addon_usuarios_perfiles up,
+                                        addon_perfiles p
                                     WHERE
-                                        (user LIKE '%$code%' OR
-                                        first_name LIKE '%$code%' OR
-                                        last_name LIKE '%$code%') AND
-                                        status LIKE '$status' 
+                                        cu.user_id = up.idusuario AND
+                                        up.idperfil = p.idperfil AND
+                                        (cu.user LIKE '%$code%' OR
+                                        cu.first_name LIKE '%$code%' OR
+                                        cu.last_name LIKE '%$code%') AND
+                                        cu.status LIKE '$status' 
                                     ORDER BY
-                                        user
+                                        cu.user
                                     LIMIT $pagina, $cantidad");
         return $query->result_array();
     }

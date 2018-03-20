@@ -61,14 +61,30 @@ class Menu_model extends CI_Model {
     }
     
     public function obtener_menu_por_padre($idpadre, $idperfil) {
-        $query = $this->db->query("SELECT m.*, up.idperfil 
+        $query = $this->db->query("SELECT m.*, pm.idperfil 
                                     FROM
                                         (addon_menu m
                                     LEFT JOIN
-                                        addon_usuarios_perfiles up
+                                        addon_perfiles_menu pm
                                     ON
-                                        m.idmenu = up.idmenu AND
-                                        up.idperfil = '$idperfil')
+                                        m.idmenu = pm.idmenu AND
+                                        pm.idperfil = '$idperfil')
+                                    WHERE
+                                        m.padre = '$idpadre'
+                                    ORDER BY
+                                        m.orden, m.menu" );
+        return $query->result_array();
+    }
+    
+    public function obtener_menu_por_padre_para_menu($idpadre, $idperfil) {
+        $query = $this->db->query("SELECT m.*, pm.idperfil 
+                                    FROM
+                                        (addon_menu m
+                                    INNER JOIN
+                                        addon_perfiles_menu pm
+                                    ON
+                                        m.idmenu = pm.idmenu AND
+                                        pm.idperfil = '$idperfil')
                                     WHERE
                                         m.padre = '$idpadre'
                                     ORDER BY

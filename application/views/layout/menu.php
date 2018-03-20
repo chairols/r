@@ -163,127 +163,51 @@
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="treeview">
-                        <a href="/dashboard/">
-                            <i class="fa fa-dashboard"></i>
-                            <span>Inicio</span>
-                        </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-cubes"></i> <span>Artículos</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-th"></i> Stock
+                    <?php foreach ($menu['menu'] as $m1) { ?>
+                        <li class="treeview<?= $m1['active'] == 1 ? " active" : "" ?>">
+                            <a href="<?= $m1['href'] ?>">
+                                <i class="<?= $m1['icono'] ?>"></i>
+                                <span><?= $m1['titulo'] ?></span>
+                                <?php if (count($m1['submenu']) > 0) { ?>
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
-                                </a>
+                                <?php } ?>
+                            </a>
+                            <!--Comienza segundo nivel del menu-->
+                            <?php if (count($m1['submenu']) > 0) { ?>
                                 <ul class="treeview-menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-qrcode"></i> Modificar Stock
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-sign-in"></i> Ingresos Pendientes
-                                        </a>
-                                    </li>
+                                    <?php foreach ($m1['submenu'] as $m2) { ?>
+                                        <li<?= ($m2['active'] == 1) ? " class='active'" : '' ?>>
+                                            <a href="<?= $m2['href'] ?>">
+                                                <i class="<?= $m2['icono'] ?>"></i>
+                                                <span><?= $m2['titulo'] ?></span>
+                                                <?php if (count($m2['submenu']) > 0) { ?>
+                                                    <span class="pull-right-container">
+                                                        <i class="fa fa-angle-left pull-right"></i>
+                                                    </span>
+                                                <?php } ?>
+                                            </a>
+                                            <!--Comienza el tercer nivel del menu-->
+                                            <?php if (count($m2['submenu']) > 0) { ?>
+                                                <ul class="treeview-menu">
+                                                    <?php foreach ($m2['submenu'] as $m3) { ?>
+                                                        <li<?= ($m3['active'] == 1) ? " class='active'" : "" ?>>
+                                                            <a href="<?=$m3['href']?>">
+                                                                <i class="<?=$m3['icono']?>"></i>
+                                                                <span><?=$m3['titulo']?></span>
+                                                            </a>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
+                                            <?php } ?>
+                                        </li>
+                                    <?php } ?>
                                 </ul>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-certificate"></i> Artículos Genéricos
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="/articulos_genericos/pendientes/">
-                                            <i class="fa fa-certificate"></i> Listado de Artículos Pen.
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/articulos_genericos/finalizados/">
-                                            <i class="fa fa-check"></i> Listado de Artículos Fin.
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-desktop"></i> Administración
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-user"></i> Usuarios
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="/usuarios/listar/">
-                                            <i class="fa fa-list-ul"></i> Listado de Usuarios
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-lock"></i> Perfiles
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="/perfiles/listar/">
-                                            <i class="fa fa-list-ul"></i> Listado de Perfiles
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/perfiles/agregar/">
-                                            <i class="fa fa-plus-square"></i> Nuevo Perfil
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-align-left"></i> Menúes
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="/menu/agregar/">
-                                            <i class="fa fa-plus-square"></i> Nuevo Menú
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/menu/">
-                                            <i class="fa fa-list-ul"></i> Listado de Menúes
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                            <?php } ?>
+                        </li>
+                    <?php } ?>
+
                 </ul>
             </section>
             <!-- /.sidebar -->

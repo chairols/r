@@ -18,34 +18,9 @@
 
             </div>
             <div class="box-body">
-                <pre>
-                    <?php print_r($session); ?>
-                </pre>
                 <div id="html">
-<!--                    <ul>
-                        <?php foreach ($padres as $padre) { ?>
-                            <div id="checkbox-<?= $padre['idmenu'] ?>"></div>
-                            <li data-jstree='{"opened":true}' id="<?= $padre['idmenu'] ?>"><?= $padre['titulo'] ?>
-                                <ul>
-                                    <?php foreach ($padre['hijos'] as $hijo) { ?>
-                                        <div id="checkbox-<?= $hijo['idmenu'] ?>"></div>
-                                        <li data-jstree='{"opened":true}' id="<?= $hijo['idmenu'] ?>"><?= $hijo['titulo'] ?>
-                                            <ul>
-                                                <?php foreach ($hijo['hijos'] as $h) { ?>
-                                                    <div id="checkbox-<?= $h['idmenu'] ?>"></div>
-                                                    <li id="<?= $h['idmenu'] ?>"><?= $h['titulo'] ?></li>
-                                                <?php } ?>
-                                            </ul>
-                                        </li>
-                                    <?php } ?>
-                                </ul>
-                            </li>
-                        <?php } ?>
-                    </ul>-->
+
                 </div>
-<!--                <pre>
-                    <?php print_r($padres); ?>
-                </pre>-->
             </div>
         </div>
     </section>

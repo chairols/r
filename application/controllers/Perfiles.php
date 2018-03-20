@@ -24,6 +24,8 @@ class Perfiles extends CI_Controller {
     }
 
     public function listar($pagina = 0) {
+        $data['menu'] = $this->r_session->get_menu();
+        $data['javascript'] = '';
         $per_page = 25;
         $perfil = '';
         if ($this->input->post('perfil') !== null) {
@@ -67,7 +69,9 @@ class Perfiles extends CI_Controller {
     }
 
     public function agregar() {
-        $this->load->view('layout/header');
+        $data['menu'] = $this->r_session->get_menu();
+        
+        $this->load->view('layout/header', $data);
         $this->load->view('layout/menu');
         $this->load->view('perfiles/agregar');
         $this->load->view('layout/footer');
@@ -120,10 +124,10 @@ class Perfiles extends CI_Controller {
 
     public function modificar($idperfil = 0) {
         $data['session'] = $this->session->all_userdata();
-        
         if ($idperfil == 0) {
             redirect('/perfiles/listar/', 'refresh');
         }
+        $data['menu'] = $this->r_session->get_menu();
         $data['javascript'] = "/assets/js/perfiles/modificar.js";
         $datos = array(
             'idperfil' => $idperfil

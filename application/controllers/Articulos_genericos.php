@@ -5,6 +5,8 @@ class Articulos_genericos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library(array(
+            'session',
+            'r_session',
             'pagination'
         ));
         $this->load->model(array(
@@ -13,9 +15,12 @@ class Articulos_genericos extends CI_Controller {
         $this->load->helper(array(
             'url'
         ));
+        $this->r_session->check($this->session->all_userdata());
     }
     
     public function pendientes($pagina = 0) {
+        $data['menu'] = $this->r_session->get_menu();
+        
         $per_page = 25;
         $code = '';
         if($this->input->post('code') !== null) {
@@ -70,6 +75,7 @@ class Articulos_genericos extends CI_Controller {
         /*
          *   Revisar porque fue copy-paste de pendientes y se modificó solo un valor en un parametro de un model
          */
+        $data['menu'] = $this->r_session->get_menu();
         $per_page = 25;
         $code = '';
         if($this->input->post('code') !== null) {
@@ -80,7 +86,7 @@ class Articulos_genericos extends CI_Controller {
          * inicio paginador
          */
         $total_rows = $this->articulos_genericos_model->get_cantidad_pendientes($code, 'A', 'F');
-        $config['base_url'] = '/articulos_genericos/pendientes/';
+        $config['base_url'] = '/articulos_genericos/finalizados/';
         $config['total_rows'] = $total_rows['cantidad'];
         $config['per_page'] = $per_page;
         $config['first_link'] = '<i class="fa fa-angle-double-left"></i>';
@@ -113,10 +119,10 @@ class Articulos_genericos extends CI_Controller {
         }
         
         
-        $this->load->view('layout/header', $data);
-        $this->load->view('layout/menu');
+        $this->load->view('layout_ace/header', $data);
+        $this->load->view('layout_ace/menu');
         $this->load->view('articulos_genericos/pendientes');
-        $this->load->view('layout/footer');
+        $this->load->view('layout_ace/footer');
     }
 }
 ?>

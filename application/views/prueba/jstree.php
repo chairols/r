@@ -35,7 +35,7 @@ Sin Sans Pro
 
 <script type="text/javascript">
 
-    $(".sans").jstree({
+    $("#html").jstree({
 
         //"plugins" : [ "types" ]
     });

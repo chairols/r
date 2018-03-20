@@ -20,16 +20,19 @@ class Usuarios extends CI_Controller {
     }
 
     public function listar($pagina = 0) {
+        $this->r_session->check($this->session->all_userdata());
+        $data['menu'] = $this->r_session->get_menu();
+        
+        $config = array();
         $per_page = 25;
         $usuario = '';
-        if($this->input->post('usuario') !== null) {
-            $usuario = $this->input->post('usuario');
-        }
+        $usuario = $this->input->get('usuario');
         
         /*
          * inicio paginador
          */
         $total_rows = $this->usuarios_model->get_cantidad($usuario, 'A');
+        $config['reuse_query_string'] = TRUE;
         $config['base_url'] = '/usuarios/listar/';
         $config['total_rows'] = $total_rows['cantidad'];
         $config['per_page'] = $per_page;
@@ -56,10 +59,10 @@ class Usuarios extends CI_Controller {
         
         $data['usuarios'] = $this->usuarios_model->gets_limit($usuario, $pagina, $config['per_page'], 'A');
         
-        $this->load->view('layout/header', $data);
-        $this->load->view('layout/menu');
+        $this->load->view('layout_ace/header', $data);
+        $this->load->view('layout_ace/menu');
         $this->load->view('usuarios/listar');
-        $this->load->view('layout/footer');
+        $this->load->view('layout_ace/footer');
     }
     
     public function login() {
@@ -103,6 +106,8 @@ class Usuarios extends CI_Controller {
     }
     
     public function modificar($idusuario) {
+        $data['menu'] = $this->r_session->get_menu();
+        $data['javascript'] = "/assets/js/perfiles/modificar.js";
         
         $this->form_validation->set_rules('perfil', 'Perfil', 'required');
         

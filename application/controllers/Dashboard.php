@@ -14,10 +14,23 @@ class Dashboard extends CI_Controller {
     }
     
     public function index() {
-        $this->load->view('layout/header');
+        $data['menu'] = $this->r_session->get_menu();
+        $data['javascript'] = '';
+        
+        $this->load->view('layout/header', $data);
         $this->load->view('layout/menu');
         $this->load->view('dashboard/index');
         $this->load->view('layout/footer');
+    }
+    
+    public function index2() {
+        $data['menu'] = $this->r_session->get_menu();
+        $data['javascript'] = '';
+        
+        $this->load->view('layout_ace/header', $data);
+        $this->load->view('layout_ace/menu');
+        $this->load->view('dashboard/index2');
+        $this->load->view('layout_ace/footer');
     }
 }
 

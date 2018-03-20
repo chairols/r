@@ -1,61 +1,60 @@
-<div class="content-wrapper">
-    <section class="content-header">
-        <h1>
-            <i class="icon fa fa-list-ul"></i> Usuarios
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Examples</a></li>
-            <li class="active">Blank page</li>
-        </ol>
-    </section>
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">Listado de Usuarios</h3>
 
-    <section class="content">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <span>
-                    <form method="POST" action="/usuarios/listar/">
-                        <input class="form-control" type="text" placeholder="Buscar..." name="usuario" autofocus>
-                    </form>
-                </span>
-                <br>
-                <div class="pull-left">
-                    <strong>Total <?= $total_rows ?> registros.</strong>
-                </div>
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    <?php
-                    echo $links;
-                    ?>
-                </ul>
-            </div>
-            <div class="box-body">
-                <table class="table table-hover table-striped">
-                    <tbody>
-                        <?php foreach ($usuarios as $usuario) { ?>
-                            <tr>
-                                <td class="text-center">
-                                    <strong><?= $usuario['first_name'] ?> <?= $usuario['last_name'] ?></strong>
-                                </td>
-                                <td class="text-center">
-                                    Perfil <br>
-
-                                </td>
-                                <td class="text-center pull-right">
-                                    <a href="#" class="btn bg-navy" data-placement="bottom" data-toggle="tooltip" data-original-title="Más información" class="tooltips">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <a href="/usuarios/modificar/<?=$usuario['user_id']?>/" class="btn btn-primary" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar" class="tooltips">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a class="btn btn-danger" data-placement="bottom" data-toggle="tooltip" data-original-title="Eliminar" class="tooltips">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
+        <div class="clearfix">
+            <div class="pull-right tableTools-container"></div>
         </div>
-    </section>
+        
+        <form class="col-sm-8 col-lg-8 col-xs-12" method="GET" action="/usuarios/listar/">
+            <div class="input-group">
+                <input class="form-control search-query" type="text" placeholder="Buscar..." name="usuario" autofocus="">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary btn-sm" type="submit">
+                        <span class="ace-icon fa fa-search icon-on-right bigger-110"> Buscar</span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        
+        <br><br>
+        
+        <ul class="pagination pagination-sm pull-right">
+            <?=$links?>
+        </ul>
+        
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Perfil</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($usuarios as $usuario) { ?>
+                <tr>
+                    <td><?= $usuario['first_name'] ?> <?= $usuario['last_name'] ?></td>
+                    <td><span class="label label-primary"><strong><?=$usuario['perfil']?></strong></span></td>
+                    <td>
+                        <a class="green" href="#">
+                            <i class="ace-icon fa fa-pencil bigger-150"></i>
+                        </a>
+                        <a class="red" href="#">
+                            
+                        </a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <div class="pull-left">
+            <strong>Total <?= $total_rows ?> registros.</strong>
+        </div>
+        <ul class="pagination pagination-sm pull-right">
+            <?=$links?>
+        </ul>
+        
+    </div>
 </div>
+

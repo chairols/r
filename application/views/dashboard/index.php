@@ -29,6 +29,12 @@
         </div>
         <div class="box-body">
           Start creating your amazing application!
+          
+          <pre>
+              <?php print_r($menu); ?>
+          </pre>
+          
+          
         </div>
         <!-- /.box-body -->
         <div class="box-footer">

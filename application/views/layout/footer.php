@@ -225,7 +225,7 @@
 <script src="/assets/AdminLTE-2.3.11/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/AdminLTE-2.3.11/dist/js/demo.js"></script>
-<?php if($javascript != '') { ?>
+<?php if(isset($javascript) && $javascript != '') { ?>
 <!-- Javascript de la Vista -->
 <script type="text/javascript" src="<?=$javascript?>"></script>
 <?php } ?>

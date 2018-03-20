@@ -7,19 +7,25 @@ class Menu extends CI_Controller {
         $this->load->library(array(
             'form_validation',
             'session',
-            'pagination'
+            'pagination',
+            'r_session'
         ));
         $this->load->model(array(
             'menu_model'
         ));
+        $this->load->helper(array(
+            'url'
+        ));
+        $this->r_session->check($this->session->all_userdata());
     }
     
-    public function index($pagina = 0) {
+    public function listar($pagina = 0) {
         $session = $this->session->all_userdata();
         $data['title'] = 'Listar Menú';
         $data['session'] = $session;
         $data['segmento'] = $this->uri->segment(1);
-        //$data['menu'] = $this->r_session->get_menu();
+        $data['javascript'] = '';
+        $data['menu'] = $this->r_session->get_menu();
         
         $per_page = 25;
         $titulo = '';
@@ -31,7 +37,7 @@ class Menu extends CI_Controller {
          * inicio paginador
          */
         $total_rows = $this->menu_model->get_cantidad_pendientes($titulo);
-        $config['base_url'] = '/menu/index/';
+        $config['base_url'] = '/menu/listar/';
         $config['total_rows'] = $total_rows['cantidad'];
         $config['per_page'] = $per_page;
         $config['first_link'] = '<i class="fa fa-angle-double-left"></i>';
@@ -76,6 +82,7 @@ class Menu extends CI_Controller {
     
     public function agregar() {
         $data['prueba'] = array();
+        $data['menu'] = $this->r_session->get_menu();
         
         $this->form_validation->set_rules('icono', 'Ícono', 'required');
         $this->form_validation->set_rules('menu', 'Menu', 'required');

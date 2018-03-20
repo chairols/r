@@ -62,23 +62,27 @@ class R_session {
             $string .= $this->CI->uri->segment(2).'/';
         
         
-        var_dump($session);
-        
-        $data['menu'] = $this->CI->menu_model->obtener_menu_por_padre(0, $session['perfil']);
+        $data['menu'] = $this->CI->menu_model->obtener_menu_por_padre_para_menu(0, $session['perfil']);
         foreach ($data['menu'] as $key => $value) {
-            $data['menu'][$key]['submenu'] = $this->CI->menu_model->obtener_menu_por_padre($value['idmenu'], $session['tipo_usuario']);
+            $data['menu'][$key]['submenu'] = $this->CI->menu_model->obtener_menu_por_padre_para_menu($value['idmenu'], $session['perfil']);
+            $data['menu'][$key]['active'] = false;
             if($value['href'] == $string || $value['href'] == $segmentoaux) {
                 $data['menu'][$key]['active'] = true;
-            } else {
-                $data['menu'][$key]['active'] = false;
-            }
+            } 
             foreach($data['menu'][$key]['submenu'] as $k => $v) {
+                $data['menu'][$key]['submenu'][$k]['submenu'] = $this->CI->menu_model->obtener_menu_por_padre_para_menu($v['idmenu'], $session['perfil']);
+                $data['menu'][$key]['submenu'][$k]['active'] = false;
                 if($v['href'] == $string || $v['href'] == $segmentoaux) {
                     $data['menu'][$key]['active'] = true;
                     $data['menu'][$key]['submenu'][$k]['active'] = true;
-                } else {
-                    $data['menu'][$key]['active'] = false;
-                    $data['menu'][$key]['submenu'][$k]['active'] = false;
+                } 
+                foreach($data['menu'][$key]['submenu'][$k]['submenu'] as $k1 => $v1) {
+                    $data['menu'][$key]['submenu'][$k]['submenu'][$k1]['active'] = false;
+                    if($v1['href'] == $string || $v['href'] == $segmentoaux) {
+                        $data['menu'][$key]['active'] = true;
+                        $data['menu'][$key]['submenu'][$k]['active'] = true;
+                        $data['menu'][$key]['submenu'][$k]['submenu'][$k1]['active'] = true;
+                    } 
                 }
             }
         }
