@@ -22,12 +22,12 @@ class Usuarios extends CI_Controller {
     public function listar($pagina = 0) {
         $this->r_session->check($this->session->all_userdata());
         $data['menu'] = $this->r_session->get_menu();
-        
+
         $config = array();
         $per_page = 25;
         $usuario = '';
         $usuario = $this->input->get('usuario');
-        
+
         /*
          * inicio paginador
          */
@@ -56,15 +56,15 @@ class Usuarios extends CI_Controller {
         /*
          * fin paginador
          */
-        
+
         $data['usuarios'] = $this->usuarios_model->gets_limit($usuario, $pagina, $config['per_page'], 'A');
-        
+
         $this->load->view('layout_ace/header', $data);
         $this->load->view('layout_ace/menu');
         $this->load->view('usuarios/listar');
         $this->load->view('layout_ace/footer');
     }
-    
+
     public function login() {
         $this->form_validation->set_rules('usuario', 'Usuario', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -76,7 +76,7 @@ class Usuarios extends CI_Controller {
             $usuario = $this->usuarios_model->get_usuario($this->input->post('usuario'), sha1($this->input->post('password')));
             if (!empty($usuario)) {
                 $perfil = $this->usuarios_model->get_perfil($usuario['user_id']);
-                
+
                 $datos = array(
                     'SID' => $usuario['user_id'],
                     'usuario' => $usuario['user'],
@@ -104,14 +104,14 @@ class Usuarios extends CI_Controller {
         $this->session->sess_destroy();
         redirect('/usuarios/login/', 'refresh');
     }
-    
+
     public function modificar($idusuario) {
         $data['menu'] = $this->r_session->get_menu();
         $data['javascript'] = "/assets/js/perfiles/modificar.js";
-        
+
         $this->form_validation->set_rules('perfil', 'Perfil', 'required');
-        
-        if($this->form_validation->run() == FALSE) {
+
+        if ($this->form_validation->run() == FALSE) {
             
         } else {
             $datos = array(
@@ -124,51 +124,51 @@ class Usuarios extends CI_Controller {
         );
         $data['usuario'] = $this->usuarios_model->get_where($datos);
         $data['perfil'] = $this->usuarios_model->get_perfil($idusuario);
-        
+
         $data['perfiles'] = $this->perfiles_model->gets();
-        
+
         $this->load->view('layout/header', $data);
         $this->load->view('layout/menu');
         $this->load->view('usuarios/modificar');
         $this->load->view('layout/footer');
     }
-    
+
     public function modificar_ajax() {
-        
+
         $this->form_validation->set_rules('usuario', 'Usuario', 'required');
-        if($this->input->post('password') != '') {
+        if ($this->input->post('password') != '') {
             $this->form_validation->set_rules('password', 'Password', 'matches[password2]');
         }
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required');
         $this->form_validation->set_rules('apellido', 'Apellido', 'required');
-        
+
         $this->form_validation->set_rules('perfil', 'Perfil', 'required');
-        
-        
-        
-        if($this->form_validation->run() == FALSE) {
+
+
+
+        if ($this->form_validation->run() == FALSE) {
             $json = array(
                 'status' => 'error',
                 'data' => validation_errors()
             );
             echo json_encode($json);
         } else {
-            
+
             /*
              *   Falta desarrollo
              */
             $datos = array(
                 'idperfil' => $this->input->post('perfil')
             );
-            $this->usuarios_model->update_perfil($datos, $this->input->post('idusuario')); 
+            $this->usuarios_model->update_perfil($datos, $this->input->post('idusuario'));
             $json = array(
-                        'status' => 'ok'
-                    );
-                    echo json_encode($json);
+                'status' => 'ok'
+            );
+            echo json_encode($json);
         }
     }
-    
+
 }
 
 ?>

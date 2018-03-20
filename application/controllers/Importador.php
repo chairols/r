@@ -6,7 +6,9 @@ class Importador extends CI_Controller {
         parent::__construct();
         $this->load->model(array(
             'movimientos_model',
-            'productos_model'
+            'productos_model',
+            'vencimientos_impuestos_model',
+            'vencimientos_conceptos_model'
         ));
     }
     
@@ -193,6 +195,44 @@ class Importador extends CI_Controller {
         $this->benchmark->mark('fin');
         
         echo $this->benchmark->elapsed_time('inicio', 'fin');
+    }
+    
+    public function vencimientos_impuestos_afip() {
+        $json = file_get_contents("https://soa.afip.gob.ar/parametros/v1/impuestos/");
+        $data = json_decode($json);
+        $this->vencimientos_impuestos_model->truncate();
+        
+        echo "<pre>";
+        foreach($data->data as $impuesto) {
+            $array = array(
+                'idimpuesto' => $impuesto->idImpuesto,
+                'impuesto' => $impuesto->descImpuesto
+            );
+            $this->vencimientos_impuestos_model->set($array);
+            print_r($array);
+//            print_r($impuesto->idImpuesto);
+//            print_r($impuesto->descImpuesto);
+        }
+        echo "</pre>";
+    }
+    
+    public function vencimientos_conceptos_afip() {
+        $json = file_get_contents("https://soa.afip.gob.ar/parametros/v1/conceptos/");
+        $data = json_decode($json);
+        $this->vencimientos_conceptos_model->truncate();
+        
+        echo "<pre>";
+        foreach($data->data as $concepto) {
+            $array = array(
+                'idconcepto' => $concepto->idConcepto,
+                'concepto' => $concepto->descConcepto
+            );
+            $this->vencimientos_conceptos_model->set($array);
+            print_r($array);
+//            print_r($impuesto->idImpuesto);
+//            print_r($impuesto->descImpuesto);
+        }
+        echo "</pre>";
     }
 }
 

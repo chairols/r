@@ -22,15 +22,14 @@ class Articulos_genericos extends CI_Controller {
         $data['menu'] = $this->r_session->get_menu();
         
         $per_page = 25;
-        $code = '';
-        if($this->input->post('code') !== null) {
-            $code = $this->input->post('code');
-        }
+        $code = $this->input->get('code');
+        
         
         /*
          * inicio paginador
          */
         $total_rows = $this->articulos_genericos_model->get_cantidad_pendientes($code, 'A', 'A');
+        $config['reuse_query_string'] = TRUE;
         $config['base_url'] = '/articulos_genericos/pendientes/';
         $config['total_rows'] = $total_rows['cantidad'];
         $config['per_page'] = $per_page;
@@ -65,27 +64,23 @@ class Articulos_genericos extends CI_Controller {
         }
         
         
-        $this->load->view('layout/header', $data);
-        $this->load->view('layout/menu');
+        $this->load->view('layout_ace/header', $data);
+        $this->load->view('layout_ace/menu');
         $this->load->view('articulos_genericos/pendientes');
-        $this->load->view('layout/footer');
+        $this->load->view('layout_ace/footer');
     }
     
     public function finalizados($pagina = 0) {
-        /*
-         *   Revisar porque fue copy-paste de pendientes y se modificó solo un valor en un parametro de un model
-         */
         $data['menu'] = $this->r_session->get_menu();
         $per_page = 25;
-        $code = '';
-        if($this->input->post('code') !== null) {
-            $code = $this->input->post('code');
-        }
+        $code = $this->input->get('code');
+        
         
         /*
          * inicio paginador
          */
         $total_rows = $this->articulos_genericos_model->get_cantidad_pendientes($code, 'A', 'F');
+        $config['reuse_query_string'] = TRUE;
         $config['base_url'] = '/articulos_genericos/finalizados/';
         $config['total_rows'] = $total_rows['cantidad'];
         $config['per_page'] = $per_page;
@@ -121,7 +116,7 @@ class Articulos_genericos extends CI_Controller {
         
         $this->load->view('layout_ace/header', $data);
         $this->load->view('layout_ace/menu');
-        $this->load->view('articulos_genericos/pendientes');
+        $this->load->view('articulos_genericos/finalizados');
         $this->load->view('layout_ace/footer');
     }
 }
