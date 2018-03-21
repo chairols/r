@@ -25,7 +25,6 @@ class Usuarios extends CI_Controller {
 
         $config = array();
         $per_page = 25;
-        $usuario = '';
         $usuario = $this->input->get('usuario');
 
         /*

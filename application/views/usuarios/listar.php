@@ -6,7 +6,7 @@
             <div class="pull-right tableTools-container"></div>
         </div>
         
-        <form class="col-sm-8 col-lg-8 col-xs-12" method="GET" action="/usuarios/listar/">
+        <form class="col-sm-8 col-lg-8 col-xs-12" method="GET">
             <div class="input-group">
                 <input class="form-control search-query" type="text" placeholder="Buscar..." name="usuario" autofocus="">
                 <span class="input-group-btn">
