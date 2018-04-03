@@ -13,6 +13,12 @@ class Vencimientos_conceptos_model extends CI_Model {
         $this->db->insert('addon_vencimientos_conceptos', $datos);
         return $this->db->insert_id();
     }
+    
+    public function get_where($where) {
+        $query = $this->db->get_where('addon_vencimientos_conceptos', $where);
+        
+        return $query->row_array();
+    }
 }
 
 ?>

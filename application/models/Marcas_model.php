@@ -13,5 +13,11 @@ class Marcas_model extends CI_Model {
                                         status = 'A'");
         return $query->result_array();
     }
+    
+    public function get_where($where) {
+        $query = $this->db->get_where('product_brand', $where);
+        
+        return $query->row_array();
+    }
 }
 ?>

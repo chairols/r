@@ -13,7 +13,10 @@
         <link rel="stylesheet" href="/assets/ace-master/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
 
         <!-- page specific plugin styles -->
-
+        <link rel="stylesheet" href="/assets/ace-master/assets/css/jquery-ui.custom.min.css" />
+        <link rel="stylesheet" href="/assets/ace-master/assets/css/fullcalendar.min.css" />
+        <link rel="stylesheet" href="/assets/ace-master/assets/css/jquery.gritter.min.css" />
+        
         <!-- text fonts -->
         <link rel="stylesheet" href="/assets/ace-master/assets/css/fonts.googleapis.com.css" />
 

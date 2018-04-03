@@ -169,7 +169,53 @@ class Prueba extends CI_Controller {
         print_r($menu);
         echo "</pre>";
     }
+    
+    
+    public function currency() {
+        /*
+         * Certificado de prueba
+         */
+        $certificado = "application/libraries/wsfe/hernan.crt";
+        $clave = "application/libraries/wsfe/hernan.privada";
+        $urlwsaa = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms";
 
+        /*
+         * Certificado REAL
+         */
+        $certificado = "application/libraries/wsfe/roller/roller.crt";
+        $clave = "application/libraries/wsfe/roller/privada.key";
+        $urlwsaa = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
+
+
+
+
+
+
+
+        $CUIT = 33647656779;
+        $urlwsaa = URLWSAA;
+
+        $wsfe = new WsFE();
+        $wsfe->CUIT = floatval($CUIT);
+        $wsfe->setURL(URLWSW);
+
+        $PtoVta = 3;
+        $TipoComp = 1;
+        $UltimoNroComprobante = 0;
+
+        if ($wsfe->Login($certificado, $clave, $urlwsaa)) {
+            if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
+                echo $wsfe->ErrorDesc;
+            } else {
+                $TipoDeCambio = $wsfe->getTipoDeCambio('DOL');
+            }
+        }
+        
+        echo "<pre>";
+        print_r($TipoDeCambio);
+        echo "</pre>"; 
+    }
+    
 }
 
 ?>

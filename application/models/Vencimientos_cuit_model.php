@@ -38,5 +38,12 @@ class Vencimientos_cuit_model extends CI_Model {
                                     LIMIT $pagina, $cantidad");
         return $query->result_array();
     }
+    
+    public function gets() {
+        $query = $this->db->query("SELECT *
+                                    FROM    
+                                        addon_vencimientos_cuit");
+        return $query->result_array();
+    }
 }
 ?>

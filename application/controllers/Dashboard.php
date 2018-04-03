@@ -17,10 +17,10 @@ class Dashboard extends CI_Controller {
         $data['menu'] = $this->r_session->get_menu();
         $data['javascript'] = '';
         
-        $this->load->view('layout/header', $data);
-        $this->load->view('layout/menu');
+        $this->load->view('layout_ace/header', $data);
+        $this->load->view('layout_ace/menu');
         $this->load->view('dashboard/index');
-        $this->load->view('layout/footer');
+        $this->load->view('layout_ace/footer');
     }
     
     public function index2() {
