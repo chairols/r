@@ -171,7 +171,7 @@ class Prueba extends CI_Controller {
     }
     
     
-    public function currency() {
+    public function currency($idmoneda) {
         /*
          * Certificado de prueba
          */
@@ -207,7 +207,7 @@ class Prueba extends CI_Controller {
             if (!$wsfe->RecuperaLastCMP($PtoVta, $TipoComp)) {
                 echo $wsfe->ErrorDesc;
             } else {
-                $TipoDeCambio = $wsfe->getTipoDeCambio('DOL');
+                $TipoDeCambio = $wsfe->getTipoDeCambio($idmoneda);
             }
         }
         

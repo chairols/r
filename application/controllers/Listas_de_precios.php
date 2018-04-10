@@ -73,12 +73,13 @@ class Listas_de_precios extends CI_Controller {
         $data['menu'] = $this->r_session->get_menu();
         
         $per_page = 25;
-        $texto = $this->input->get('texto');
+        $data['generico'] = $this->input->get('generico');
+        $data['proveedor'] = $this->input->get('proveedor');
         
         /*
          * inicio paginador
          */
-        $total_rows = $this->listas_de_precios_model->get_cantidad_comparaciones_lista($idcomparacion, $texto, 'A');
+        $total_rows = $this->listas_de_precios_model->get_cantidad_comparaciones_lista($idcomparacion, $data['generico'], $data['proveedor'], 'A');
         $config['reuse_query_string'] = TRUE;
         $config['base_url'] = '/listas_de_precios/modificar/'.$idcomparacion.'/';
         $config['total_rows'] = count($total_rows);
@@ -104,7 +105,7 @@ class Listas_de_precios extends CI_Controller {
          * fin paginador
          */
         
-        $data['items'] = $this->listas_de_precios_model->gets_comparaciones_lista_limit($idcomparacion, $pagina, $config['per_page'], $texto, 'A');
+        $data['items'] = $this->listas_de_precios_model->gets_comparaciones_lista_limit($idcomparacion, $pagina, $config['per_page'], $data['generico'], $data['proveedor'], 'A');
         foreach ($data['items'] as $key => $value) {
             $data['items'][$key]['articulos'] = $this->listas_de_precios_model->gets_precios_por_comparacion_y_generico($idcomparacion, $value['abstract_id'], 'A');
         }

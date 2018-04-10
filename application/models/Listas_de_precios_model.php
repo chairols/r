@@ -52,31 +52,73 @@ class Listas_de_precios_model extends CI_Model {
         return $query->result_array();
     }
     
-    public function get_cantidad_comparaciones_lista($idcomparacion, $texto, $status) {
+    public function get_cantidad_comparaciones_lista($idcomparacion, $articulo, $proveedor, $status) {
+//        $query = $this->db->query("SELECT pci.abstract_id
+//                                    FROM
+//                                        product_comparation_item pci
+//                                    INNER JOIN
+//                                        product_abstract pa
+//                                    ON
+//                                        pci.abstract_id = pa.abstract_id AND
+//                                        pci.comparation_id = '$idcomparacion' AND
+//                                        pci.status = '$status'
+//                                    GROUP BY
+//                                        pci.abstract_id");
+        
         $query = $this->db->query("SELECT pci.abstract_id
                                     FROM
-                                        product_comparation_item pci
+                                        ((product_comparation_item pci
                                     INNER JOIN
                                         product_abstract pa
                                     ON
-                                        pci.abstract_id = pa.abstract_id AND
-                                        pci.comparation_id = '$idcomparacion' AND
-                                        pci.status = '$status'
+                                        pci.abstract_id = pa.abstract_id)
+                                    INNER JOIN
+                                        company c
+                                    ON
+                                        pci.company_id = c.company_id)
+                                    WHERE
+                                        (pci.comparation_id = '$idcomparacion' AND
+                                        pci.status = '$status') AND
+                                        (pa.code LIKE '%$articulo%' AND
+                                        c.name LIKE '%$proveedor%')
                                     GROUP BY
                                         pci.abstract_id");
         return $query->result_array();
     }
     
-    public function gets_comparaciones_lista_limit($idcomparacion, $pagina, $cantidad, $texto, $status) {
+    public function gets_comparaciones_lista_limit($idcomparacion, $pagina, $cantidad, $articulo, $proveedor, $status) {
+//        $query = $this->db->query("SELECT pa.code as generico, pci.abstract_stock, pci.abstract_stock_diff, pci.relation_id, pci.abstract_id
+//                                    FROM
+//                                        product_comparation_item pci
+//                                    INNER JOIN
+//                                        product_abstract pa
+//                                    ON
+//                                        pci.abstract_id = pa.abstract_id AND
+//                                        pci.comparation_id = '$idcomparacion' AND
+//                                        pci.status = '$status'
+//                                    GROUP BY
+//                                        pci.abstract_id
+//                                    ORDER BY
+//                                        generico
+//                                    LIMIT $pagina, $cantidad");
+        
+        
         $query = $this->db->query("SELECT pa.code as generico, pci.abstract_stock, pci.abstract_stock_diff, pci.relation_id, pci.abstract_id
                                     FROM
-                                        product_comparation_item pci
+                                        ((product_comparation_item pci
                                     INNER JOIN
                                         product_abstract pa
                                     ON
-                                        pci.abstract_id = pa.abstract_id AND
-                                        pci.comparation_id = '$idcomparacion' AND
-                                        pci.status = '$status'
+                                        pci.abstract_id = pa.abstract_id)
+                                    INNER JOIN
+                                        company c
+                                    ON
+                                        pci.company_id = c.company_id)
+                                    WHERE
+                                        (pci.comparation_id = '$idcomparacion' AND
+                                        pci.status = '$status') AND
+                                        (pa.code LIKE '%$articulo%' AND
+                                        c.name LIKE '%$proveedor%')
                                     GROUP BY
                                         pci.abstract_id
                                     ORDER BY
@@ -86,21 +128,46 @@ class Listas_de_precios_model extends CI_Model {
     }
     
     public function gets_precios_por_comparacion_y_generico($idcomparacion, $idgenerico, $status) {
+//        $query = $this->db->query("SELECT c.name as compania, pb.name as marca, pr.code as codigo_proveedor, p.code as codigo_roller, pci.price as precio, pci.stock as stock_proveedor, pci.abstract_stock
+//                                    FROM
+//                                        product_comparation_item pci,
+//                                        product p,
+//                                        company c,
+//                                        product_brand pb,
+//                                        product_relation pr
+//                                    WHERE
+//                                        pci.product_id = p.product_id AND
+//                                        pci.company_id = c.company_id AND
+//                                        pci.brand_id = pb.brand_id AND
+//                                        pci.relation_id = pr.relation_id AND
+//                                        pci.comparation_id = '$idcomparacion' AND
+//                                        pci.abstract_id = '$idgenerico' AND
+//                                        pci.status = '$status'
+//                                    ORDER BY
+//                                        pci.price");
+        
         $query = $this->db->query("SELECT c.name as compania, pb.name as marca, pr.code as codigo_proveedor, p.code as codigo_roller, pci.price as precio, pci.stock as stock_proveedor, pci.abstract_stock
                                     FROM
-                                        product_comparation_item pci,
-                                        product p,
-                                        company c,
-                                        product_brand pb,
-                                        product_relation pr
-                                    WHERE
+                                        ((((product_comparation_item pci
+                                    INNER JOIN
+                                        product p
+                                    ON
                                         pci.product_id = p.product_id AND
-                                        pci.company_id = c.company_id AND
-                                        pci.brand_id = pb.brand_id AND
-                                        pci.relation_id = pr.relation_id AND
                                         pci.comparation_id = '$idcomparacion' AND
                                         pci.abstract_id = '$idgenerico' AND
-                                        pci.status = '$status'
+                                        pci.status = '$status')
+                                    INNER JOIN
+                                        company c
+                                    ON
+                                        pci.company_id = c.company_id)
+                                    INNER JOIN
+                                        product_brand pb
+                                    ON
+                                        pci.brand_id = pb.brand_id)
+                                    INNER JOIN 
+                                        product_relation pr
+                                    ON
+                                        pci.relation_id = pr.relation_id)
                                     ORDER BY
                                         pci.price");
         return $query->result_array();

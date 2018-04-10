@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 <?php foreach ($comparaciones as $comparacion) { ?>
-                    <tr>
+                    <tr class="itemdiv">
                         <td><?= $comparacion['creation_date'] ?></td>
                         <td>
                             <?php foreach ($comparacion['companias'] as $compania) { ?>
@@ -49,6 +49,12 @@
                                     <i class="fa fa-eye"></i>
                                 </span>
                             </a>
+
+                            <div class="tools">
+                                <a href="/listas_de_precios/modificar/<?= $comparacion['comparation_id'] ?>/" class="btn btn-minier btn-info">
+                                    <i class="icon-only ace-icon fa fa-eye tooltip-info" data-rel="tooltip" data-placement="left" title="Analizar"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 <?php } ?>

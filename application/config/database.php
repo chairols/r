@@ -75,15 +75,18 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
+    
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'mysql',
 	'database' => 'sistema',
+    
 //        'hostname' => '192.168.1.5',
 //        'username' => 'erpv2',
 //        'password' => 'erpv2',
 //        'database' => 'rollerse_example',
-	'dbdriver' => 'mysqli',
+
+    'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),

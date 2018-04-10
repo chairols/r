@@ -61,7 +61,9 @@ class Importador extends CI_Controller {
     
     
     public function actualizar_product() {
-        
+        /*
+         *  En el Sistema correr PROGRAMA LISTSTOZ y lo guarda en C:\IMPORTAR\nombre.txt
+         */
         $this->benchmark->mark('inicio');
         $cantidad = $this->productos_model->get_cantidad_productos();
         
